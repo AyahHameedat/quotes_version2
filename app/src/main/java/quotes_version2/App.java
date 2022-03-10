@@ -6,6 +6,7 @@ package quotes_version2;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,9 +28,11 @@ public class App {
     public static String readJsonFile() {
         String contentLine = "";
         String result ="";
+        BufferedReader br = null;
 //        "C:\\Users\\ayoos\\quotes\\recentquotes.json"
         try {
-            BufferedReader br = Files.newBufferedReader(Path.of("C:\\Users\\ayoos\\quotes\\recentquotes.json"));
+//            BufferedReader br = Files.newBufferedReader(Path.of("C:\\Users\\ayoos\\quotes\\recentquotes.json"));
+            br = new BufferedReader(new FileReader("C:\\Users\\ayoos\\quotes\\recentquotes.json"));
             contentLine = br.readLine();
             while (contentLine != null) {
 //                System.out.println(contentLine);

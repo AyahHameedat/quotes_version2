@@ -7,12 +7,12 @@ public class recentquotes {
 
      String author;
      String text;
-//
-//    public recentquotes(String author, String text) {
-//
-//        this.author = author;
-//        this.text = text;
-//    }
+
+    public recentquotes(String author, String text) {
+
+        this.author = author;
+        this.text = text;
+    }
 
 
     @Override
