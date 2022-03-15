@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 public class recentquotes {
 
-
      String author;
      String text;
+
 
     public recentquotes(String author, String text) {
 
@@ -17,7 +17,7 @@ public class recentquotes {
 
     @Override
     public String toString() {
-        return "recentquotes{" +
+        return "{" +
                 "author='" + author + '\'' +
                 ", text='" + text + '\'' +
                 '}';
