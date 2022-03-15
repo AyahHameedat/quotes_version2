@@ -5,34 +5,96 @@ package quotes_version2;
 
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class App {
 
     public static void main(String[] args) {
 
-
         Gson gson = new Gson();
         String jsonFile = readJsonFile();
-        recentquotes[] ayaObj = gson.fromJson(jsonFile, recentquotes[].class);
-        int randNum = (int)(Math.random()*ayaObj.length);
-        System.out.println(ayaObj[randNum]);
-        
+        recentquotes[] convertFile = gson.fromJson(jsonFile, recentquotes[].class);
+
+//        System.out.println(convertFile);
+
+
+        String oneJson = readJsonFile();
+//        System.out.println("ONEJAsON" + oneJson);
+        ArrayList ayaObj = gson.fromJson(oneJson, ArrayList.class);
+//        System.out.println("READING");
+//        System.out.println(ayaObj);
+
+
+
+
+        URL quotesURL = null;
+        String quotesData = "";
+        try {
+            //step1
+            quotesURL = new URL("https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en");
+            //step2
+            HttpURLConnection quotesHttpURLConnection = (HttpURLConnection) quotesURL.openConnection();
+            //step3
+            quotesHttpURLConnection.setRequestMethod("GET");
+            //step4
+            InputStreamReader quoteInputStreamReader = new InputStreamReader(quotesHttpURLConnection.getInputStream());
+            BufferedReader quoteBufferedReader = new BufferedReader(quoteInputStreamReader);
+            quotesData = quoteBufferedReader.readLine();
+//            System.out.println(quotesData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+//
+//        Gson gson = new Gson();
+        forismatic quote = gson.fromJson(quotesData, forismatic.class);
+//        System.out.println(quote);
+
+
+        recentquotes finalQuote = new recentquotes(quote.quoteAuthor, quote.quoteText);
+//        System.out.println(finalQuote.toString());
+//        System.out.println("****************************************");
+        ////////////////
+//        QuotRes.add(quote);
+
+        ayaObj.add(finalQuote);
+//
+
+//        System.out.println("*************************************");
+//        System.out.println(ayaObj);
+//        System.out.println("*************************************");
+
+//        String twoJson1 = readJsonFile();
+        File queFile = new File("C:\\Users\\ayoos\\quotes_version2\\recentquotes.json");
+        try (FileWriter quoteFileWriter = new FileWriter(queFile)) {
+            gson.toJson(ayaObj, quoteFileWriter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        System.out.println(ayaObj.get(0));
+
+        int randNum = (int) (Math.random() * ayaObj.size());
+        System.out.println(ayaObj.get(randNum));
+
+
     }
+
+
 
 
     public static String readJsonFile() {
         String contentLine = "";
         String result ="";
         BufferedReader br = null;
-//        "C:\\Users\\ayoos\\quotes\\recentquotes.json"
         try {
-//            BufferedReader br = Files.newBufferedReader(Path.of("C:\\Users\\ayoos\\quotes\\recentquotes.json"));
-            br = new BufferedReader(new FileReader("C:\\Users\\ayoos\\quotes\\recentquotes.json"));
+            br = new BufferedReader(new FileReader("C:\\Users\\ayoos\\quotes_version2\\recentquotes.json"));
             contentLine = br.readLine();
             while (contentLine != null) {
 //                System.out.println(contentLine);
@@ -44,6 +106,4 @@ public class App {
         }
         return result;
     }
-
-
 }
