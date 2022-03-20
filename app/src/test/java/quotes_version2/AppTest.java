@@ -3,9 +3,42 @@
  */
 package quotes_version2;
 
+import com.google.gson.Gson;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
+
+
+    @Test
+    @DisplayName("fileApiJson Test")
+    void fileApiJsonTest() {
+        Gson gson = new Gson();
+        String oneJson = App.readJsonFile();
+        ArrayList ayaObj = gson.fromJson(oneJson, ArrayList.class);
+        String expected = "{author=George R.R. Martin, text=Missandei: Valar morghulis.}";
+        if (ayaObj.contains(expected)) {
+            assertTrue(true);
+        }
+    }
+
+
+    @Test
+    @DisplayName("fileApiJsonRandom Test")
+    void fileApiJsonRandomTest() {
+        Gson gson = new Gson();
+        String oneJson = App.readJsonFile();
+        ArrayList ayaObj = gson.fromJson(oneJson, ArrayList.class);
+        int randNum = (int) (Math.random() * ayaObj.size());
+        System.out.println(ayaObj.get(randNum));
+        String expected = String.valueOf(ayaObj.get(randNum));
+        if (ayaObj.contains(expected)) {
+            assertTrue(true);
+        }
+    }
 
 }
