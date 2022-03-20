@@ -7,29 +7,18 @@ import com.google.gson.Gson;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class App {
 
     public static void main(String[] args) {
 
         Gson gson = new Gson();
-        String jsonFile = readJsonFile();
-        recentquotes[] convertFile = gson.fromJson(jsonFile, recentquotes[].class);
-
-//        System.out.println(convertFile);
-
 
         String oneJson = readJsonFile();
-//        System.out.println("ONEJAsON" + oneJson);
         ArrayList ayaObj = gson.fromJson(oneJson, ArrayList.class);
-//        System.out.println("READING");
-//        System.out.println(ayaObj);
-
-
 
 
         URL quotesURL = null;
@@ -47,38 +36,24 @@ public class App {
             quotesData = quoteBufferedReader.readLine();
 //            System.out.println(quotesData);
         } catch (IOException e) {
-            e.printStackTrace();
+
+            recentquotes[] quotesArray = gson.fromJson(oneJson, recentquotes[].class);
+            int randomNumber = (int) (Math.random() * ayaObj.size());
+            System.out.println(quotesArray[randomNumber]);
+            return;
         }
 
 
-//
-//        Gson gson = new Gson();
         forismatic quote = gson.fromJson(quotesData, forismatic.class);
-//        System.out.println(quote);
-
-
         recentquotes finalQuote = new recentquotes(quote.quoteAuthor, quote.quoteText);
-//        System.out.println(finalQuote.toString());
-//        System.out.println("****************************************");
-        ////////////////
-//        QuotRes.add(quote);
-
         ayaObj.add(finalQuote);
-//
 
-//        System.out.println("*************************************");
-//        System.out.println(ayaObj);
-//        System.out.println("*************************************");
-
-//        String twoJson1 = readJsonFile();
         File queFile = new File("C:\\Users\\ayoos\\quotes_version2\\recentquotes.json");
         try (FileWriter quoteFileWriter = new FileWriter(queFile)) {
             gson.toJson(ayaObj, quoteFileWriter);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
-
-//        System.out.println(ayaObj.get(0));
 
         int randNum = (int) (Math.random() * ayaObj.size());
         System.out.println(ayaObj.get(randNum));
